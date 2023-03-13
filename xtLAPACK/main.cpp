@@ -1,5 +1,5 @@
 #include <iostream>
-#include "la.h"
+#include "xtLAPACK.h"
 
 int m1, n1, m2, n2, _arr [MAXN][MAXN];
 
