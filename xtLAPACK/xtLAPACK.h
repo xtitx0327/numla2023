@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include <cstring>
+#include <cmath>
 
 template <typename DT>
 class Matrix
@@ -109,6 +110,21 @@ public:
                     return 0;
         
         return 1;
+    }
+
+    /// @brief 通过 Gauss 消元法，将方阵分解为下三角和上三角矩阵的乘积，仍存储在当前矩阵中
+    void GaussLU () {
+        if (M != N) {
+            _errMessage = 1;
+            return;
+        }
+        for (int k = 1; k < N; ++ k) {
+            for (int i = k + 1; i <= N; ++ i)
+                arr [i][k] /= arr [k][k];
+            for (int i = k + 1; i <= N; ++ i)
+                for (int j = k + 1; j <= N; ++ j)
+                    arr [i][j] -= arr [i][k] * arr [k][j];
+        }
     }
 
     /// @brief 计算矩阵乘积 M*M2，其中 M 为当前矩阵
@@ -272,6 +288,155 @@ Matrix <DT> backwardSub (Matrix <DT> A, Matrix <DT> b) {
     }
 
     return ret;
+}
+
+/// @brief 利用 Gauss 消元法，解方程组 Ax=b 
+template <typename DT>
+Matrix <DT> solveGauss (Matrix <DT> A, Matrix <DT> b) {
+    Matrix <DT> ret, tmp;
+    if (A.M != A.N || A.M != b.M || b.N != 1) {
+        ret._errMessage = 1;
+        return ret;
+    }
+
+    A.GaussLU ();
+    tmp.M = tmp.N = A.M;
+
+    for (int i = 1; i <= A.M; ++ i)
+        for (int j = 1; j <= i; ++ j)
+            tmp.arr [i][j] = (i == j ? 1 : A.arr [i][j]);
+    
+    b = forwardSub (tmp, b);
+
+    memset (tmp.arr, 0, sizeof (tmp.arr));
+
+    for (int i = 1; i <= A.M; ++ i)
+        for (int j = i; j <= A.M; ++ j)
+            tmp.arr [i][j] = A.arr [i][j];
+
+    b = backwardSub (tmp, b);
+
+    return b;
+}
+
+template <typename DT>
+Matrix <DT> solveCompletePivotGauss (Matrix <DT> A, Matrix <DT> b) {
+    Matrix <DT> ret;
+    if (A.M != A.N || A.M != b.M || b.N != 1) {
+        ret._errMessage = 1;
+        return ret;
+    }
+
+    int p, q, maxVal, u [MAXN], v [MAXN];
+
+    for (int k = 1; k < A.M; ++ k) {
+        maxVal = -1;
+        for (int i = k; i <= A.M; ++ i)
+            for (int j = k; j <= A.M; ++ j)
+                if (fabs (A.arr [i][j]) >= maxVal) {
+                    maxVal = fabs (A.arr [i][j]);
+                    p = i;
+                    q = j;
+                }
+        for (int i = 1; i <= A.M; ++ i)
+            std :: swap (A.arr [k][i], A.arr [p][i]);
+        for (int i = 1; i <= A.M; ++ i)
+            std :: swap (A.arr [i][k], A.arr [i][q]);
+        
+        u [k] = p;
+        v [k] = q;
+        if (A.arr [k][k] != 0) {
+            for (int i = k + 1; i <= A.M; ++ i)
+                A.arr [i][k] /= A.arr [k][k];
+            for (int i = k + 1; i <= A.M; ++ i)
+                for (int j = k + 1; j <= A.M; ++ j)
+                    A.arr [i][j] -= A.arr [i][k] * A.arr [k][j];
+        } else {
+            ret._errMessage = 3; // 矩阵奇异
+            return ret;
+        }
+    }
+
+    Matrix <DT> tmp;
+    tmp.M = tmp.N = A.M;
+
+    for (int i = 1; i <= A.M; ++ i)
+        for (int j = 1; j <= i; ++ j)
+            tmp.arr [i][j] = (i == j ? 1 : A.arr [i][j]);
+    
+    for (int i = 1; i < A.M; ++ i)
+        std :: swap (b.arr [i][1], b.arr [u [i]][1]);
+
+    b = forwardSub (tmp, b);
+
+    memset (tmp.arr, 0, sizeof (tmp.arr));
+
+    for (int i = 1; i <= A.M; ++ i)
+        for (int j = i; j <= A.M; ++ j)
+            tmp.arr [i][j] = A.arr [i][j];
+    
+    b = backwardSub (tmp, b);
+
+    for (int i = A.M - 1; i >= 1; -- i)
+        std :: swap (b.arr [i][1], b.arr [v [i]][1]);
+    
+    return b;
+}
+
+template <typename DT>
+Matrix <DT> solveColumnPivotGauss (Matrix <DT> A, Matrix <DT> b) {
+    Matrix <DT> ret;
+    if (A.M != A.N || A.M != b.M || b.N != 1) {
+        ret._errMessage = 1;
+        return ret;
+    }
+
+    int p, maxVal, u [MAXN];
+
+    for (int k = 1; k < A.M; ++ k) {
+        maxVal = -1;
+        for (int i = k; i <= A.M; ++ i)
+            if (fabs (A.arr [i][k]) >= maxVal) {
+                maxVal = fabs (A.arr [i][k]);
+                p = i;
+            }
+        for (int i = 1; i <= A.M; ++ i)
+            std :: swap (A.arr [k][i], A.arr [p][i]);
+        
+        u [k] = p;
+        if (A.arr [k][k] != 0) {
+            for (int i = k + 1; i <= A.M; ++ i)
+                A.arr [i][k] /= A.arr [k][k];
+            for (int i = k + 1; i <= A.M; ++ i)
+                for (int j = k + 1; j <= A.M; ++ j)
+                    A.arr [i][j] -= A.arr [i][k] * A.arr [k][j];
+        } else {
+            ret._errMessage = 3; // 矩阵奇异
+            return ret;
+        }
+    }
+
+    Matrix <DT> tmp;
+    tmp.M = tmp.N = A.M;
+
+    for (int i = 1; i <= A.M; ++ i)
+        for (int j = 1; j <= i; ++ j)
+            tmp.arr [i][j] = (i == j ? 1 : A.arr [i][j]);
+    
+    for (int i = 1; i < A.M; ++ i)
+        std :: swap (b.arr [i][1], b.arr [u [i]][1]);
+
+    b = forwardSub (tmp, b);
+
+    memset (tmp.arr, 0, sizeof (tmp.arr));
+
+    for (int i = 1; i <= A.M; ++ i)
+        for (int j = i; j <= A.M; ++ j)
+            tmp.arr [i][j] = A.arr [i][j];
+    
+    b = backwardSub (tmp, b);
+    
+    return b;
 }
 
 #endif
