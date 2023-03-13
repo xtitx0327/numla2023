@@ -1,0 +1,24 @@
+\documentclass[UTF8]{ctexart}
+
+\usepackage{amsmath, geometry, amssymb, listings, framed}
+\geometry{left=2cm, right=2cm, top=2cm, bottom=2cm}
+
+\title{\vspace{-2cm}数值代数第二次作业}
+\author{数学与应用数学（强基计划）2101\quad 王笑同\quad 3210105450}
+\date{\today}
+
+\linespread{1.65}
+
+\begin{document}
+
+\maketitle
+
+\pagestyle{plain}
+
+1. （1）以 $n$ 阶可逆上三角矩阵 $A$ 为例，只需说明其伴随 $A^*$ 是上三角矩阵，即要说明对任何 $1\leqslant i<j\leqslant n$，有 $M_{ij}=0$，其中 $M_{ij}$ 代表 $a_{ij}$ 的余子式. 注意到 $a_{ij}$ 是上三角元，因此根据代数余子式的定义，$M_{ij}$ 中必然有一个对角元是 $0$，即 $M_{ij}=0$. 由 $i,j$ 的任意性知 $(A^{*})^{\mathrm{T}}$ 是下三角矩阵，从而 $A^*$ 是上三角矩阵.
+
+（2）对矩阵 $A$ 的阶数 $n$ 做归纳. 当 $n=1$ 时，结论自明. 现设结论对大小为 $n<m$ 的单位上三角阵成立，欲证明结论对 $n=m$ 的单位上三角阵成立. 记 $A^{-1}=(b_{ij})_{n\times n}$. 此时，根据归纳假设，$A$ 的 $(m-1)$ 阶顺序主子阵的逆是单位上三角阵，则 $\det A^{-1}=b_{mm}$. 由 $\det A^{-1}\cdot \det A=1$ 即知 $b_{mm}=1$，即 $A^{-1}$ 是单位上三角矩阵.
+
+2. 
+
+\end{document}
