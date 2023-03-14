@@ -7,7 +7,7 @@
 \author{数学与应用数学（强基计划）2101\quad 王笑同\quad 3210105450}
 \date{\today}
 
-\linespread{1.65}
+%\linespread{1.5}
 
 \begin{document}
 
@@ -19,6 +19,146 @@
 
 （2）对矩阵 $A$ 的阶数 $n$ 做归纳. 当 $n=1$ 时，结论自明. 现设结论对大小为 $n<m$ 的单位上三角阵成立，欲证明结论对 $n=m$ 的单位上三角阵成立. 记 $A^{-1}=(b_{ij})_{n\times n}$. 此时，根据归纳假设，$A$ 的 $(m-1)$ 阶顺序主子阵的逆是单位上三角阵，则 $\det A^{-1}=b_{mm}$. 由 $\det A^{-1}\cdot \det A=1$ 即知 $b_{mm}=1$，即 $A^{-1}$ 是单位上三角矩阵.
 
-2. 
+\quad
+
+2. 类似熟知的 Gauss 变换，对 $n$ 阶矩阵 $A$，在第 $k\,(1\leqslant k\leqslant n-1)$ 步消元时，令
+\[U_k=\begin{pmatrix}
+    1\\
+    &1\\
+    &&\ddots&-u_{kj}&\\
+    &&&1\\
+    &&&&1
+\end{pmatrix},\]
+
+其中 $u_{kj}=\dfrac{a_{jk}^{(n-k)}}{a_{kk}^{(n-k)}}$，$j=1,2,\dots,k-1$. 则
+\[L_k\cdots L_{n-k}A^{(n-k)}=\begin{pmatrix}
+    A_{22}^{(n-k)}&O\\
+    A_{12}^{(n-k)}&A_{11}&{(n-k)}
+\end{pmatrix}.\]
+
+记 $L=U_1U_2\cdots U_nA$，则 $L$ 为下三角矩阵；$U=U_n^{-1}U_{n-1}^{-1}\cdots U_2^{-1}=I+u_ne_n^{\mathrm{T}}+\cdots+u_2e_2^{\mathrm{T}}$ 位单位上三角矩阵. 此时成立 $A=UL$. 特别地，若 $A$ 可逆，则 $a_{ii}^{(i-1)},\ i=1,2,\dots,k$ 均非零，从而对角线上所有顺序主子阵非奇异，由此即得分解的唯一性.
+
+\quad
+
+3. （1）将 $A$ 左乘 $L_1=\begin{pmatrix}
+    1\\
+    -2 & 1\\
+    -3 & 0 & 1
+\end{pmatrix}$，得到 $L_1A=\begin{pmatrix}
+    1 & 4 & 7\\
+    0 & -3 & -6\\
+    0 & -6 & -11\\
+\end{pmatrix}$；将 $L_1A$ 左乘 $L_2=\begin{pmatrix}
+    1\\
+    0&1\\
+    0&-2&1
+\end{pmatrix}$，得到 $L_2(L_1A)=\begin{pmatrix}
+    1 & 4 & 7\\
+    0 & -3 & -6\\
+    0 & 0 & 1
+\end{pmatrix}$. 从而所求 LU 分解为
+\[L=(L_2L_1)^{-1}=\begin{pmatrix}
+    1 & 0 & 0\\
+    2 & 1 & 0\\
+    3 & 2 & 1
+\end{pmatrix},\quad U=\begin{pmatrix}
+    1 & 4 & 7\\
+    0 & -3 & -6\\
+    0 & 0 & 1
+\end{pmatrix}.\]
+
+利用前代法，解方程组 $Ly=b$ 得 $y=(1,-1,0)^{\mathrm{T}}$，再利用回代法解方程组 $Ux=y$ 得 $x=\left(-\dfrac13,\dfrac13,0\right)$.
+
+（2）第 1 步消元，选定第 1 列的第 3 个元素为主元，交换第 1 行和第 3 行得 $\begin{pmatrix}
+    3 & 6 & 10\\
+    2 & 5 & 8\\
+    1 & 4 & 7
+\end{pmatrix}$，此时 $L_1=\begin{pmatrix}
+    1 \\
+    -\dfrac{2}{3} & 1 \\
+    -\dfrac{1}{3} & 0 & 1
+\end{pmatrix}$，消元后 $L_1A=\begin{pmatrix}
+    3 & 6 & 10\\
+    0 & 1 & \dfrac43\\
+    0 & 2 & \dfrac{11}{3}
+\end{pmatrix}$. 第 2 步消元，选定第 2 列的第 2 个元素为主元，交换 $L_1A$ 的第 2 行和第 3 行得 $\begin{pmatrix}
+    3 & 6 & 10 \\
+    0 & 2 & \dfrac{11}{3} \\
+    0 & 1 & \dfrac43
+\end{pmatrix}$. 此时 $L_2=\begin{pmatrix}
+    1 \\
+    0 & 1 \\
+    0 & -\dfrac12 & 1
+\end{pmatrix}$，消元后 $L_2(L_1A)=\begin{pmatrix}
+    3 & 6 & 10 \\
+    0 & 2 & \dfrac{11}{3} \\
+    0 & 0 & -\dfrac12
+\end{pmatrix}$. 从而所求列主元分解为
+\[P=\begin{pmatrix}
+    0 & 0 & 1 \\
+    1 & 0 & 0 \\
+    0 & 1 & 0 \\
+\end{pmatrix},\quad L=\begin{pmatrix}
+    1 \\
+    \dfrac13 & 1 \\
+    \dfrac23 & \dfrac12 & 1
+\end{pmatrix},\quad U=L_2(L_1A)=\begin{pmatrix}
+    3 & 6 & 10 \\
+    0 & 2 & \dfrac{11}{3} \\
+    0 & 0 & -\dfrac12
+\end{pmatrix}.\]
+
+用前代法解方程组 $Ly=Pb$ 得 $y=\left(1,\dfrac23,0\right)^{\mathrm{T}}$，用回代法解方程组 $Ux=y$ 得 $x=\left(-\dfrac13,\dfrac13,0\right)$.
+
+（3）第 1 步消元，选定第 3 行第 3 列的元素为主元，交换第 3 行和第 1 行、第 3 列和第 1 列得 $\begin{pmatrix}
+    10 & 6 & 3 \\
+    8 & 5 & 2 \\
+    7 & 4 & 1
+\end{pmatrix}$. 此时 $L_1=\begin{pmatrix}
+    1 \\
+    -\dfrac45 & 1 \\
+    -\dfrac7{10} & 0 & 1
+\end{pmatrix}$，消元得 $L_1A=\begin{pmatrix}
+    10 & 6 & 3\\
+    0 & \dfrac15 & -\dfrac25 \\
+    0 & -\dfrac15 & -\dfrac{11}{10}
+\end{pmatrix}$. 第 2 步消元，主元为第 3 行第 3 列的元素，交换第 3 行和第 2 行、第 3 列和第 2 列得 $\begin{pmatrix}
+    10 & 3 & 6 \\
+    0 & -\dfrac{11}{10} & -\dfrac15 \\
+    0 & -\dfrac25 & \dfrac15
+\end{pmatrix}$. 此时 $L_2=\begin{pmatrix}
+    1 \\
+    0 & 1 \\
+    0 & -\dfrac{4}{11} & 1
+\end{pmatrix}$，从而 $L_2(L_1A)=\begin{pmatrix}
+    10 & 3 & 6\\
+    0 & -\dfrac{11}{10} & -\dfrac15 \\
+    0 & 0 & \dfrac{7}{55}
+\end{pmatrix}$. 于是
+\[P=\begin{pmatrix}
+    0 & 0 & 1 \\
+    1 & 0 & 0 \\
+    0 & 1 & 0 \\
+\end{pmatrix},\quad Q=\begin{pmatrix}
+    0 & 0 & 1 \\
+    1 & 0 & 0 \\
+    0 & 1 & 0 \\
+\end{pmatrix},\quad L=\begin{pmatrix}
+    1 & 0 & 0 \\
+    \dfrac7{10} & 1 & 0 \\
+    \dfrac{8}{10} & \dfrac{4}{11} & 1
+\end{pmatrix},\quad U=\begin{pmatrix}
+    10 & 3 & 6\\
+    0 & -\dfrac{11}{10} & -\dfrac15 \\
+    0 & 0 & \dfrac{7}{55}
+\end{pmatrix}.\]
+
+用前代法求解 $Ly=Pb$ 得 $y$，用回代法解 $Uz=y$ 得 $z$，最后由 $x=Qz$ 得 $x=\left(-\dfrac13,\dfrac13,0\right)$.
+
+\quad
+
+\quad
+
+\textbf{上机习题见 program 文件夹，程序是在 Linux 下编译的：）}
 
 \end{document}

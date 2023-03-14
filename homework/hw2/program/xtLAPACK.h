@@ -14,7 +14,7 @@
 #define _xtLAPACK
 
 ///@brief 矩阵的行列数上限
-#define MAXN 15
+#define MAXN 85
 
 #include <iostream>
 #include <cstring>
@@ -436,7 +436,7 @@ Matrix <DT> solveColumnPivotGauss (Matrix <DT> A, Matrix <DT> b) {
             tmp.arr [i][j] = A.arr [i][j];
     
     b = backwardSub (tmp, b);
-
+    
     return b;
 }
 
