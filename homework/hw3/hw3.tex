@@ -1,0 +1,89 @@
+\documentclass[UTF8]{ctexart}
+
+\usepackage{amsmath, geometry, amssymb, listings, framed}
+\geometry{left=2cm, right=2cm, top=2cm, bottom=2cm}
+
+\title{\vspace{-2cm}数值代数第三次作业}
+\author{数学与应用数学（强基计划）2101\quad 王笑同\quad 3210105450}
+\date{\today}
+
+\linespread{1.65}
+
+\begin{document}
+
+\maketitle
+
+\pagestyle{plain}
+
+1. 利用平方分解法，可得 $LL^{\mathrm{T}}=A$，其中
+\[L=\begin{pmatrix}
+    2\\
+    -1 & 3\\
+    2 & 0 & 2\\
+    1 & -2 & 1 & 1
+\end{pmatrix}.\]
+
+用前代法解方程组 $Ly=b$，得 $y=(4,2,4,2)^{\mathrm{T}}$；再利用回代法解 $L^{\mathrm{T}}x=y$，得 $x=(1,2,1,2)^{\mathrm{T}}$.
+
+\quad
+
+2. 利用改进的平方分解法，可得 $LDL^{\mathrm{T}}=A$，其中
+\[L=\begin{pmatrix}
+    1\\
+    2&1\\
+    3&4&1
+\end{pmatrix},\quad D=\begin{pmatrix}
+    10\\
+    &5\\
+    &&1
+\end{pmatrix}.\]
+
+用前代法解方程 $Ly=b$ 得 $y=(10,-15,-1)^{\mathrm{T}}$，简单计算得 $Dz=y$ 的解是 $z=(1,-3,1)^{\mathrm{T}}$，用回代法求方程 $L^{\mathrm{T}}x=z$ 得 $x=(2,1,-1)^{\mathrm{T}}$.
+
+\quad
+
+3. 设 $A$ 有分解
+\[A=\begin{pmatrix}
+    \alpha_1\\
+    \gamma_2&\alpha_2\\
+    &\gamma_3&\alpha_3
+\end{pmatrix}\begin{pmatrix}
+    1&\beta_1\\
+    &1&\beta_2\\
+    &&1
+\end{pmatrix},\]
+
+则由追赶法公式
+\[\begin{cases}
+    \alpha_i=a_i-c_i,\\
+    \beta_i=\dfrac{b_i}{a_i-c_i},\\
+    \gamma_i=c_i
+\end{cases}\]
+
+得到
+\[A=\begin{pmatrix}
+    -4\\
+    2&-4\\
+    &2&8
+\end{pmatrix}\begin{pmatrix}
+    1&-1\\
+    &1&-1\\
+    &&1
+\end{pmatrix}.\]
+
+依次用前代法和回代法解得 $x=(1,-1,0)^{\mathrm{T}}$.
+
+\newpage
+
+4. 写出增广矩阵，依次进行行列变换得到（过程太长就不写了QAQ）
+
+\[A^{-1}=\begin{pmatrix}
+    -\frac{4}{85} & \frac{10}{17} & -\frac{23}{85} & -\frac{16}{17} \\
+    \frac{33}{85} & -\frac{6}{17} & \frac{41}{85} & \frac{13}{17} \\
+    \frac{19}{85} & \frac{5}{17} & -\frac{3}{85} & -\frac{8}{17} \\
+    -\frac{3}{85} & -\frac{1}{17} & \frac{4}{85} & \frac{5}{17}
+\end{pmatrix}\]
+
+\textbf{上机习题见 program 文件夹，其中的 result.md 给出了程序的计算结果和我对作业的解答. 程序是在 Linux 下编译的：）}
+
+\end{document}

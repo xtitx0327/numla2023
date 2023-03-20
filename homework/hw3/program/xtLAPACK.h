@@ -14,7 +14,7 @@
 #define _xtLAPACK
 
 ///@brief 矩阵的行列数上限
-#define MAXN 15
+#define MAXN 101
 
 #include <iostream>
 #include <cstring>
